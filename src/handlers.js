@@ -2,7 +2,6 @@ const option = require("./knex");
 const knex = require("knex")(option);
 
 // GET PRODUCT
-// all
 const getProducts = async (req, h) => {
   try {
     const data = await knex("comodity").select().orderBy("id");
@@ -24,8 +23,30 @@ const getProducts = async (req, h) => {
   }
 };
 
+// GET PRODUCT BY ID
+const getProductById = async (req, h) => {
+  try {
+    const { id } = req.params;
+    const data = await knex("comodity").where({ id: id });
+    const response = h.response({
+      success: true,
+      message: "Your request succesfully.",
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      success: false,
+      message: error.message,
+      error: error.code,
+    });
+    response.code(400);
+    return response;
+  }
+};
+
 // GET CATEGORY
-// all
 const getCategory = async (req, h) => {
   try {
     const data = await knex("category").select().orderBy("id");
@@ -47,11 +68,56 @@ const getCategory = async (req, h) => {
   }
 };
 
+// GET CATEGORY ID
+const getCategoryById = async (req, h) => {
+  try {
+    const { id } = req.params;
+    const data = await knex("category").where({ id: id });
+    const response = h.response({
+      success: true,
+      message: "Your request succesfully.",
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      success: false,
+      message: error.message,
+      error: error.code,
+    });
+    response.code(400);
+    return response;
+  }
+};
+
 // GET PRICE
-// all
 const getPrice = async (req, h) => {
   try {
     const data = await knex("price").select().orderBy("id");
+    const response = h.response({
+      success: true,
+      message: "Your request succesfully.",
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      success: false,
+      message: error.message,
+      error: error.code,
+    });
+    response.code(400);
+    return response;
+  }
+};
+
+// GET PRICE BY PRODUCT ID
+const getPriceByProductId = async (req, h) => {
+  try {
+    const { id } = req.params;
+    const data = await knex("price").where({ id_comodity: id });
     const response = h.response({
       success: true,
       message: "Your request succesfully.",
@@ -89,8 +155,11 @@ const unknownRoutes = async (_, h) => {
 
 module.exports = {
   getProducts,
+  getProductById,
   getCategory,
+  getCategoryById,
   getPrice,
+  getPriceByProductId,
   unknownRoutes,
   requestPayload,
 };

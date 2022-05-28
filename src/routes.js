@@ -1,6 +1,9 @@
 const {
   getProducts,
+  getProductById,
   getCategory,
+  getCategoryById,
+  getPriceByProductId,
   getPrice,
   unknownRoutes,
   requestPayload,
@@ -14,11 +17,25 @@ module.exports = [
     handler: getProducts,
   },
 
+  // PRODUCT By ID
+  {
+    method: "GET",
+    path: "/product/{id}",
+    handler: getProductById,
+  },
+
   // CATEGORY
   {
     method: "GET",
     path: "/category",
     handler: getCategory,
+  },
+
+  // CATEGORY By ID
+  {
+    method: "GET",
+    path: "/category/{id}",
+    handler: getCategoryById,
   },
 
   // PRICE
@@ -28,11 +45,19 @@ module.exports = [
     handler: getPrice,
   },
 
-  // {
-  //   method: "POST",
-  //   path: "/",
-  //   handler: requestPayload,
-  // },
+  // PRICE BY PRODUCT ID
+  {
+    method: "GET",
+    path: "/price/{id}",
+    handler: getPriceByProductId,
+  },
+
+  // PAYLOAD
+  {
+    method: "POST",
+    path: "/",
+    handler: requestPayload,
+  },
 
   {
     method: "*",
