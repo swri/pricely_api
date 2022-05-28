@@ -1,4 +1,4 @@
-const { getProducts, unknownRoutes, requestPayload } = require("./handlers");
+const { getProducts, unknownRoutes, getPrices } = require("./handlers");
 
 module.exports = [
   {
@@ -8,10 +8,16 @@ module.exports = [
   },
 
   {
-    method: "POST",
-    path: "/",
-    handler: requestPayload,
+    method: 'GET',
+    path: '/prices/{id}',
+    handler: getPrices,
   },
+
+  // {
+  //   method: "POST",
+  //   path: "/",
+  //   handler: requestPayload,
+  // },
 
   {
     method: "*",

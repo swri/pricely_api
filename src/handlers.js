@@ -3,7 +3,7 @@ const knex = require("knex")(option);
 
 const getProducts = async (req, h) => {
   try {
-    const data = await knex("price_products").select().orderBy('tahun');
+    const data = await knex("products").select().orderBy("id");
     const response = h.response({
       success: true,
       message: "Your request succesfully.",
@@ -27,6 +27,17 @@ const requestPayload = async (req, h) => {
   return `data: ${payload}!`;
 };
 
+const getPrices = async (req, h) => {
+  month = req.params;
+
+  await knex("price_products")
+    .select()
+    .where({ bulan: month })
+    .then((result) => {
+      return h.response({}).code(200);
+    });
+};
+
 // ============= Error Handler ===============
 
 const unknownRoutes = async (_, h) => {
@@ -39,4 +50,4 @@ const unknownRoutes = async (_, h) => {
     .code(500);
 };
 
-module.exports = { getProducts, unknownRoutes, requestPayload };
+module.exports = { getProducts, unknownRoutes, getPrices };
