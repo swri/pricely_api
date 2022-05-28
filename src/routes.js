@@ -5,8 +5,9 @@ const {
   getCategory,
   getCategoryById,
   getDetailCategoryById,
-  getPriceByProductId,
   getPrice,
+  getPriceByProductId,
+  getYearPriceByProductId,
   unknownRoutes,
   requestPayload,
 } = require("./handlers");
@@ -31,7 +32,7 @@ module.exports = [
   // PRODUCTS
   {
     method: "GET",
-    path: "/product",
+    path: "/products",
     handler: getProducts,
   },
 
@@ -82,6 +83,13 @@ module.exports = [
     method: "GET",
     path: "/price/{id}",
     handler: getPriceByProductId,
+  },
+
+  // PRICE BY YEAR AND PRODUCT ID
+  {
+    method: "GET",
+    path: "/price/{id}/{col}",
+    handler: getYearPriceByProductId,
   },
 
   // PAYLOAD
