@@ -1,9 +1,57 @@
 const option = require("./knex");
 const knex = require("knex")(option);
 
+// GET PRODUCT
+// all
 const getProducts = async (req, h) => {
   try {
-    const data = await knex("price_products").select().orderBy('tahun');
+    const data = await knex("comodity").select().orderBy("id");
+    const response = h.response({
+      success: true,
+      message: "Your request succesfully.",
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      success: false,
+      message: error.message,
+      error: error.code,
+    });
+    response.code(400);
+    return response;
+  }
+};
+
+// GET CATEGORY
+// all
+const getCategory = async (req, h) => {
+  try {
+    const data = await knex("category").select().orderBy("id");
+    const response = h.response({
+      success: true,
+      message: "Your request succesfully.",
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      success: false,
+      message: error.message,
+      error: error.code,
+    });
+    response.code(400);
+    return response;
+  }
+};
+
+// GET PRICE
+// all
+const getPrice = async (req, h) => {
+  try {
+    const data = await knex("price").select().orderBy("id");
     const response = h.response({
       success: true,
       message: "Your request succesfully.",
@@ -39,4 +87,10 @@ const unknownRoutes = async (_, h) => {
     .code(500);
 };
 
-module.exports = { getProducts, unknownRoutes, requestPayload };
+module.exports = {
+  getProducts,
+  getCategory,
+  getPrice,
+  unknownRoutes,
+  requestPayload,
+};
