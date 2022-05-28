@@ -46,6 +46,30 @@ const getProductById = async (req, h) => {
   }
 };
 
+// GET PRODUCT DETAIL DESC BY ID
+const getDetailProductById = async (req, h) => {
+  try {
+    const { id } = req.params;
+    const { col } = req.params;
+    const data = await knex("comodity").where({ id: id }).select(col);
+    const response = h.response({
+      success: true,
+      message: "Your request succesfully.",
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      success: false,
+      message: error.message,
+      error: error.code,
+    });
+    response.code(400);
+    return response;
+  }
+};
+
 // GET CATEGORY
 const getCategory = async (req, h) => {
   try {
@@ -73,6 +97,30 @@ const getCategoryById = async (req, h) => {
   try {
     const { id } = req.params;
     const data = await knex("category").where({ id: id });
+    const response = h.response({
+      success: true,
+      message: "Your request succesfully.",
+      data: data,
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    const response = h.response({
+      success: false,
+      message: error.message,
+      error: error.code,
+    });
+    response.code(400);
+    return response;
+  }
+};
+
+// GET CATEGORY NAME,DESC,IMGURL BY ID
+const getDetailCategoryById = async (req, h) => {
+  try {
+    const { id } = req.params;
+    const { col } = req.params;
+    const data = await knex("category").where({ id: id }).select(col);
     const response = h.response({
       success: true,
       message: "Your request succesfully.",
@@ -156,8 +204,10 @@ const unknownRoutes = async (_, h) => {
 module.exports = {
   getProducts,
   getProductById,
+  getDetailProductById,
   getCategory,
   getCategoryById,
+  getDetailCategoryById,
   getPrice,
   getPriceByProductId,
   unknownRoutes,
