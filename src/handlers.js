@@ -141,17 +141,6 @@ const requestPayload = async (req, h) => {
   return `data: ${payload}!`;
 };
 
-const getPrices = async (req, h) => {
-  month = req.params;
-
-  await knex("price_products")
-    .select()
-    .where({ bulan: month })
-    .then((result) => {
-      return h.response({}).code(200);
-    });
-};
-
 // ============= Error Handler ===============
 
 const unknownRoutes = async (_, h) => {

@@ -6,7 +6,6 @@ const {
   getPriceByProductId,
   getPrice,
   unknownRoutes,
-  requestPayload,
 } = require("./handlers");
 
 module.exports = [
@@ -56,14 +55,8 @@ module.exports = [
   {
     method: "GET",
     path: "/prices/{id}",
-    handler: getPrices,
+    handler: getPrice,
   },
-
-  // {
-  //   method: "POST",
-  //   path: "/",
-  //   handler: requestPayload,
-  // },
 
   {
     method: "*",
