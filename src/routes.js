@@ -1,7 +1,7 @@
+const { getPrices } = require("./prices_handlers");
+const { unknownRoutes, getHomepage, unknownPage } = require("./handlers");
 const { getProducts, getProductById } = require("./products_handlers");
 const { getCategories, getCategoryById } = require("./categories_handlers");
-const getPrices = require("./prices_handlers");
-const { unknownRoutes } = require("./handlers");
 
 module.exports = [
   {
@@ -32,6 +32,18 @@ module.exports = [
     method: "GET",
     path: "/api/price/{id}/{any*}",
     handler: getPrices,
+  },
+
+  {
+    method: "*",
+    path: "/",
+    handler: getHomepage,
+  },
+
+  {
+    method: "*",
+    path: "/{any*}",
+    handler: unknownPage,
   },
 
   {
