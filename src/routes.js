@@ -1,18 +1,37 @@
 const {
   getProducts,
   getProductById,
+  getDetailProductById,
   getCategory,
   getCategoryById,
-  getPriceByProductId,
+  getDetailCategoryById,
   getPrice,
+  getPriceByProductId,
+  getYearPriceByProductId,
   unknownRoutes,
 } = require("./handlers");
 
 module.exports = [
-  // PRODUCTS
+  // HOME SWEET HOME
   {
     method: "GET",
     path: "/",
+    handler: (req, h) => {
+      const data = "HALO SELAMAT DATANG";
+      const response = h.response({
+        success: true,
+        message: "SEMANGAT TeamCloud",
+        data: data,
+      });
+      response.code(200);
+      return response;
+    },
+  },
+
+  // PRODUCTS
+  {
+    method: "GET",
+    path: "/products",
     handler: getProducts,
   },
 
@@ -21,6 +40,13 @@ module.exports = [
     method: "GET",
     path: "/product/{id}",
     handler: getProductById,
+  },
+
+  // PRODUCT DETAIL By ID
+  {
+    method: "GET",
+    path: "/product/{id}/{col}",
+    handler: getDetailProductById,
   },
 
   // CATEGORY
@@ -37,6 +63,13 @@ module.exports = [
     handler: getCategoryById,
   },
 
+  // CATEGORY Name, Desc, img_url By ID
+  {
+    method: "GET",
+    path: "/category/{id}/{col}",
+    handler: getDetailCategoryById,
+  },
+
   // PRICE
   {
     method: "GET",
@@ -49,6 +82,13 @@ module.exports = [
     method: "GET",
     path: "/price/{id}",
     handler: getPriceByProductId,
+  },
+
+  // PRICE BY YEAR AND PRODUCT ID
+  {
+    method: "GET",
+    path: "/price/{id}/{col}",
+    handler: getYearPriceByProductId,
   },
 
   // PAYLOAD
