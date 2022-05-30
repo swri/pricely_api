@@ -11,10 +11,10 @@ const init = async () => {
   const server = hapi.server({
     host: process.env.HOST,
     port: process.env.PORT,
-    // tls: {
-    //   key: fs.readFileSync(path.resolve("src/utils/private.key")),
-    //   cert: fs.readFileSync(path.resolve("src/utils/certificate.crt")),
-    // },
+    tls: {
+      key: fs.readFileSync(path.resolve("src/utils/private.key")),
+      cert: fs.readFileSync(path.resolve("src/utils/certificate.crt")),
+    },
     routes: {
       cors: {
         origin: ["*"],

@@ -4,7 +4,7 @@ const knex = require("knex")(option);
 const date = new Date();
 
 const getProducts = async (req, h) => {
-  const { category } = req.query;
+  const { category, recommendation } = req.query;
 
   if (req.query.api_key !== process.env.API_KEY) {
     return h
@@ -17,9 +17,144 @@ const getProducts = async (req, h) => {
       .code(401);
   }
 
-  if (category !== undefined) {
-    return await knex("products")
-      .where("id_category", category)
+  if (category !== undefined && recommendation !== "true") {
+    return await knex
+      .from("products")
+      .innerJoin("prices", "products.id", "prices.id_product")
+      .select(
+        "products.id",
+        "products.name",
+        "prices.price",
+        "prices.month",
+        "prices.year",
+        "products.id_category",
+        "products.weight",
+        "products.unit",
+        "products.image_url",
+        "products.description"
+      )
+      .where("prices.month", date.getUTCMonth() + 1)
+      .andWhere("prices.year", date.getUTCFullYear() - 1)
+      .andWhere("products.id_category", category)
+      .then((result) => {
+        return h
+          .response({
+            success: true,
+            code: 200,
+            message: "your request successfully.",
+            data: result,
+          })
+          .code(200);
+      })
+      .catch((error) => {
+        return h
+          .response({
+            success: false,
+            code: 404,
+            message: "your request failed",
+            detail: error.message,
+          })
+          .code(404);
+      });
+  } else if (category === undefined && recommendation == "true") {
+    return await knex
+      .from("products")
+      .innerJoin("prices", "products.id", "prices.id_product")
+      .select(
+        "products.id",
+        "products.name",
+        "prices.price",
+        "prices.month",
+        "prices.year",
+        "products.id_category",
+        "products.weight",
+        "products.unit",
+        "products.image_url",
+        "products.description"
+      )
+      .where("prices.month", date.getUTCMonth() + 1)
+      .andWhere("prices.year", date.getUTCFullYear() - 1)
+      .orderBy("prices.price")
+      .limit(10)
+      .then((result) => {
+        return h
+          .response({
+            success: true,
+            code: 200,
+            message: "your request successfully.",
+            data: result,
+          })
+          .code(200);
+      })
+      .catch((error) => {
+        return h
+          .response({
+            success: false,
+            code: 404,
+            message: "your request failed",
+            detail: error.message,
+          })
+          .code(404);
+      });
+  } else if (category !== undefined && recommendation === "true") {
+    return await knex
+      .from("products")
+      .innerJoin("prices", "products.id", "prices.id_product")
+      .select(
+        "products.id",
+        "products.name",
+        "prices.price",
+        "prices.month",
+        "prices.year",
+        "products.id_category",
+        "products.weight",
+        "products.unit",
+        "products.image_url",
+        "products.description"
+      )
+      .where("prices.month", date.getUTCMonth() + 1)
+      .andWhere("prices.year", date.getUTCFullYear() - 1)
+      .andWhere("products.id_category", category)
+      .orderBy("prices.price")
+      .limit(10)
+      .then((result) => {
+        return h
+          .response({
+            success: true,
+            code: 200,
+            message: "your request successfully.",
+            data: result,
+          })
+          .code(200);
+      })
+      .catch((error) => {
+        return h
+          .response({
+            success: false,
+            code: 404,
+            message: "your request failed",
+            detail: error.message,
+          })
+          .code(404);
+      });
+  } else {
+    return await knex
+      .from("products")
+      .innerJoin("prices", "products.id", "prices.id_product")
+      .select(
+        "products.id",
+        "products.name",
+        "prices.price",
+        "prices.month",
+        "prices.year",
+        "products.id_category",
+        "products.weight",
+        "products.unit",
+        "products.image_url",
+        "products.description"
+      )
+      .where("prices.month", date.getUTCMonth() + 1)
+      .andWhere("prices.year", date.getUTCFullYear() - 1)
       .then((result) => {
         return h
           .response({
@@ -41,28 +176,6 @@ const getProducts = async (req, h) => {
           .code(404);
       });
   }
-
-  return await knex("products")
-    .then((result) => {
-      return h
-        .response({
-          success: true,
-          code: 200,
-          message: "your request successfully.",
-          data: result,
-        })
-        .code(200);
-    })
-    .catch((error) => {
-      return h
-        .response({
-          success: false,
-          code: 404,
-          message: "your request failed",
-          detail: error.message,
-        })
-        .code(404);
-    });
 };
 
 const getProductById = async (req, h) => {
