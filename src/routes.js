@@ -2,6 +2,7 @@ const { getPrices } = require("./prices_handlers");
 const { unknownRoutes, getHomepage, unknownPage } = require("./handlers");
 const { getProducts, getProductById } = require("./products_handlers");
 const { getCategories, getCategoryById } = require("./categories_handlers");
+const { getProductBySearch, getSuggestions } = require("./search_handlers");
 
 module.exports = [
   {
@@ -14,6 +15,18 @@ module.exports = [
     method: "GET",
     path: "/api/product/{id}/{any*}",
     handler: getProductById,
+  },
+
+  {
+    method: "GET",
+    path: "/api/search/{any*}",
+    handler: getProductBySearch,
+  },
+
+  {
+    method: "GET",
+    path: "/api/suggestions/{any*}",
+    handler: getSuggestions,
   },
 
   {

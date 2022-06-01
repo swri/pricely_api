@@ -3,7 +3,7 @@ const knex = require("knex")(option);
 
 const date = new Date();
 
-const getPrices = async (req, h) => {
+exports.getPrices = getPrices = async (req, h) => {
   const { year, month } = req.query;
 
   if (req.query.api_key !== process.env.API_KEY) {
@@ -153,5 +153,3 @@ const getPrices = async (req, h) => {
       });
   }
 };
-
-module.exports = { getPrices };

@@ -1,14 +1,14 @@
 // ============= Error Handler ===============
 
-const getHomepage = async (_, h) => {
+exports.getHomepage = getHomepage = async (_, h) => {
   return h.file("index.html");
 };
 
-const unknownPage = async (_, h) => {
+exports.unknownPage = unknownPage = async (_, h) => {
   return h.file("error.html");
 };
 
-const unknownRoutes = async (_, h) => {
+exports.unknownRoutes = unknownRoutes = async (_, h) => {
   return h
     .response({
       success: false,
@@ -17,10 +17,4 @@ const unknownRoutes = async (_, h) => {
       detail: "the api you're trying to reach cant be found.",
     })
     .code(404);
-};
-
-module.exports = {
-  unknownRoutes,
-  getHomepage,
-  unknownPage,
 };

@@ -1,7 +1,7 @@
 const option = require("./knex");
 const knex = require("knex")(option);
 
-const getCategories = async (req, h) => {
+exports.getCategories = getCategories = async (req, h) => {
   if (req.query.api_key !== process.env.API_KEY) {
     return h
       .response({
@@ -36,7 +36,7 @@ const getCategories = async (req, h) => {
     });
 };
 
-const getCategoryById = async (req, h) => {
+exports.getCategoryById = getCategoryById = async (req, h) => {
   if (req.query.api_key !== process.env.API_KEY) {
     return h
       .response({
@@ -71,5 +71,3 @@ const getCategoryById = async (req, h) => {
         .code(404);
     });
 };
-
-module.exports = { getCategories, getCategoryById };
