@@ -60,8 +60,9 @@ exports.getPrices = getPrices = async (req, h) => {
       });
   } else if (year === undefined && month === "true") {
     return await knex("prices")
+      .select("id", "month", knex.raw("cast(avg(price) as decimal) as price"))
       .where("id_product", req.params.id)
-      .andWhere("year", date.getUTCFullYear() - 1)
+      .groupBy("month")
       .then((result) => {
         if (month < 1 || month > 12) {
           return h
@@ -95,8 +96,9 @@ exports.getPrices = getPrices = async (req, h) => {
       });
   } else if (year === "true" && month === undefined) {
     return await knex("prices")
+      .select("id", "year", knex.raw("cast(avg(price) as decimal) as price"))
       .where("id_product", req.params.id)
-      .andWhere("month", date.getUTCMonth() + 1)
+      .groupBy("year")
       .then((result) => {
         if (year < 2013 || year > 2021) {
           return h
