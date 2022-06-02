@@ -1,7 +1,7 @@
 const option = require("./knex");
 const knex = require("knex")(option);
 
-exports.getProductBySearch = getProductBySearch = async (req, h) => {
+exports.getProductBySearch = async (req, h) => {
   if (req.query.api_key !== process.env.API_KEY) {
     return h
       .response({
@@ -70,7 +70,7 @@ exports.getProductBySearch = getProductBySearch = async (req, h) => {
   }
 };
 
-exports.getSuggestions = getSuggestion = async (req, h) => {
+exports.getSuggestions = async (req, h) => {
   if (req.query.api_key !== process.env.API_KEY) {
     return h
       .response({

@@ -1,14 +1,14 @@
 // ============= Error Handler ===============
 
-exports.getHomepage = getHomepage = async (_, h) => {
+exports.getHomepage = async (_, h) => {
   return h.file("index.html");
 };
 
-exports.unknownPage = unknownPage = async (_, h) => {
+exports.unknownPage = async (_, h) => {
   return h.file("error.html");
 };
 
-exports.unknownRoutes = unknownRoutes = async (_, h) => {
+exports.unknownRoutes = async (_, h) => {
   return h
     .response({
       success: false,

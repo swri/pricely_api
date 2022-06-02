@@ -1,9 +1,7 @@
 const option = require("./knex");
 const knex = require("knex")(option);
 
-const date = new Date();
-
-exports.getPrices = getPrices = async (req, h) => {
+exports.getPrices = async (req, h) => {
   const { year, month } = req.query;
 
   if (req.query.api_key !== process.env.API_KEY) {
