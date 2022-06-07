@@ -24,36 +24,30 @@ exports.getProductBySearch = async (req, h) => {
       .code(404);
   } else {
     return await knex("products")
-      .select("id", "name")
-      .whereILike("name", `%${req.query.query}%`)
-      .andWhereILike("description", `%${req.query.query}%`)
-      .limit(5)
+      .innerJoin("prices", "products.id", "prices.id_product")
+      .select(
+        "products.*",
+        "year",
+        "month",
+        "price",
+        knex.raw(
+          `IF (price > (SELECT price FROM prices WHERE id_product = ${
+            req.params.id
+          } AND year = ${
+            date.getUTCFullYear() - 1
+          } AND month = ${date.getUTCMonth()}), 1, 0) as is_rising`
+        )
+      )
+      .whereILike("products.id", req.params.id)
+      .andWhere("year", date.getUTCFullYear() - 1)
+      .andWhere("month", date.getUTCMonth() + 1)
       .then((result) => {
-        if (result.length === 0) {
-          return h
-            .response({
-              success: false,
-              code: 404,
-              message: "your request failed",
-              detail: `nothing value like ${req.query.query}`,
-            })
-            .code(404);
-        } else if (result.length === 1) {
-          return h
-            .response({
-              success: true,
-              code: 200,
-              message: "your request successfully",
-              data: result[0],
-            })
-            .code(200);
-        }
         return h
           .response({
             success: true,
             code: 200,
             message: "your request successfully",
-            data: result,
+            data: result[0],
           })
           .code(200);
       })
