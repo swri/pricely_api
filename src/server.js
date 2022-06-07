@@ -23,14 +23,14 @@ const init = async () => {
       method: "*",
       path: "/{any*}",
       handler: (_, h) => {
-        return h.redirect("https://34.124.235.106");
+        return h.redirect(`https://${process.env.HOST}`);
       },
     },
     {
       method: "*",
       path: "/{redirect}",
       handler: (req, h) => {
-        return h.redirect(`https://34.124.235.106/${req.params.redirect}`);
+        return h.redirect(`https://${process.env.HOST}/${req.params.redirect}`);
       },
     },
   ]);

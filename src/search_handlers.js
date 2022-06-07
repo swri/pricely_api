@@ -1,6 +1,8 @@
 const option = require("./knex");
 const knex = require("knex")(option);
 
+const date = new Date();
+
 exports.getProductBySearch = async (req, h) => {
   if (req.query.api_key !== process.env.API_KEY) {
     return h
@@ -26,28 +28,23 @@ exports.getProductBySearch = async (req, h) => {
     return await knex("products")
       .innerJoin("prices", "products.id", "prices.id_product")
       .select(
-        "products.*",
-        "year",
-        "month",
-        "price",
-        knex.raw(
-          `IF (price > (SELECT price FROM prices WHERE id_product = ${
-            req.params.id
-          } AND year = ${
-            date.getUTCFullYear() - 1
-          } AND month = ${date.getUTCMonth()}), 1, 0) as is_rising`
-        )
+        "products.id",
+        "products.name",
+        "prices.price",
+        "products.weight",
+        "products.unit",
+        "products.image_url"
       )
-      .whereILike("products.id", req.params.id)
       .andWhere("year", date.getUTCFullYear() - 1)
       .andWhere("month", date.getUTCMonth() + 1)
+      .whereILike("name", `${req.query.query}%`)
       .then((result) => {
         return h
           .response({
             success: true,
             code: 200,
             message: "your request successfully",
-            data: result[0],
+            data: result,
           })
           .code(200);
       })

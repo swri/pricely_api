@@ -1,6 +1,8 @@
 const option = require("./knex");
 const knex = require("knex")(option);
 
+const date = new Date();
+
 exports.getPrices = async (req, h) => {
   const { year, month } = req.query;
 
@@ -58,33 +60,23 @@ exports.getPrices = async (req, h) => {
       });
   } else if (year === undefined && month === "true") {
     return await knex("prices")
-      .select(
-        knex.raw("row_number() over() as id"),
-        "month",
-        knex.raw("cast(avg(price) as decimal) as price")
-      )
+      .select(knex.raw("row_number() over() as id"), "price", "month", "year")
       .where("id_product", req.params.id)
-      .groupBy("month")
+      .andWhere(function () {
+        this.where("year", date.getUTCFullYear() - 1).orWhere(
+          "year",
+          date.getUTCFullYear() - 2
+        );
+      })
       .then((result) => {
-        if (month < 1 || month > 12) {
-          return h
-            .response({
-              success: false,
-              code: 400,
-              message: "your request failed.",
-              detail: "your value entered exceeds the limit.",
-            })
-            .code(400);
-        } else {
-          return h
-            .response({
-              success: true,
-              code: 200,
-              message: "your request successfully.",
-              data: result,
-            })
-            .code(200);
-        }
+        return h
+          .response({
+            success: true,
+            code: 200,
+            message: "your request successfully.",
+            data: result,
+          })
+          .code(200);
       })
       .catch((error) => {
         return h
